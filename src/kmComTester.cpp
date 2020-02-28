@@ -23,55 +23,20 @@
 *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "KMComTester.h"
-#include "ui_KMComTester.h"
-
 #include <QTimer>
 #include <QSettings>
 #include <QMessageBox>
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 
-#define CMD_A 'a'
-#define CMD_B 'b'
-#define CMD_C 'c'
-#define CMD_D 'd'
-#define CMD_E 'e'
-#define CMD_F 'f'
-#define CMD_G 'g'
-#define CMD_H 'h'
-#define CMD_I 'i'
-#define CMD_J 'j'
-#define CMD_K 'k'
-#define CMD_L 'l'
-#define CMD_R 'r'
-#define CMD_U 'u'
-#define CMD_T 't'
-#define CMD_X 'x'
-#define SEQ_1 '1'
-#define SEQ_2 '2'
-#define SEQ_3 '3'
-#define SEQ_4 '4'
-#define SEQ_5 '5'
-#define SEQ_6 '6'
-#define SEQ_7 '7'
-#define SEQ_8 '8'
-#define SEQ_9 '9'
-
-#define KM_COM_BUFFER_LEN 100
-#define KM_APP_NAME "kmComTester"
-#define KM_APP_MAJOR 1
-#define KM_APP_MINOR 0
-#define KM_APP_PATCH 0
-#define KM_APP_BUILD 10
-#define KM_APP_VERSION KM_APP_MAJOR "." KM_APP_MINOR "." KM_APP_PATCH "." KM_APP_BUILD
-#define KM_APP_LICENSE "GNU General Public License v3.0"
-#define KM_APP_SETTINGS_INI_FILE_NAME "./" KM_APP_NAME ".ini"
+#include "kmComTester.h"
+#include "ui_kmComTester.h"
+#include "kmCommon.h"
 
 kmComTester::kmComTester(QWidget *parent)
 	: QMainWindow(parent)
 	, m_sequencePos(0)
-	, m_serialPortName("COM14")
+	, m_serialPortName(KM_COM_DEFAULT)
 	, m_serialBaudRate(QSerialPort::Baud115200)
 	, m_serialDataBits(QSerialPort::Data8)
 	, m_serialParity(QSerialPort::NoParity)
@@ -162,11 +127,11 @@ void kmComTester::slotAbout(void) {
 
 void kmComTester::slotBtnConnect(void) {
 	m_serialPort.setPortName(m_ui->comboSerialPortList->currentText());
-	m_serialPort.setBaudRate(QSerialPort::Baud115200);
-	m_serialPort.setDataBits(QSerialPort::Data8);
-	m_serialPort.setParity(QSerialPort::NoParity);
-	m_serialPort.setStopBits(QSerialPort::OneStop);
-	m_serialPort.setFlowControl(QSerialPort::NoFlowControl);
+	m_serialPort.setBaudRate(m_serialBaudRate);
+	m_serialPort.setDataBits(m_serialDataBits);
+	m_serialPort.setParity(m_serialParity);
+	m_serialPort.setStopBits(m_serialStopBits);
+	m_serialPort.setFlowControl(m_serialFlowControl);
 	if (m_serialPort.open(QIODevice::ReadWrite)) {
 		m_ui->btnConnect->setEnabled(false);
 		m_ui->btnDisconnect->setEnabled(true);
@@ -313,12 +278,12 @@ void kmComTester::loadSettings(void) {
 	move(settings.value("/pos", QPoint(200, 200)).toPoint());
 	settings.endGroup();
 	settings.beginGroup("/Serial");
-	QString portTmp = settings.value("/port", "COM1").toString();
-	m_serialBaudRate = QSerialPort::BaudRate(settings.value("/baudRate").toInt());
-	m_serialDataBits = QSerialPort::DataBits(settings.value("/dataBits").toInt());
-	m_serialParity = QSerialPort::Parity(settings.value("/baudParity").toInt());
-	m_serialStopBits = QSerialPort::StopBits(settings.value("/baudStopBits").toInt());
-	m_serialFlowControl = QSerialPort::FlowControl(settings.value("/baudFlowControl").toInt());
+	QString portTmp = settings.value("/port", KM_COM_DEFAULT).toString();
+	m_serialBaudRate = QSerialPort::BaudRate(settings.value("/baudRate", QSerialPort::Baud115200).toInt());
+	m_serialDataBits = QSerialPort::DataBits(settings.value("/dataBits", QSerialPort::Data8).toInt());
+	m_serialParity = QSerialPort::Parity(settings.value("/baudParity", QSerialPort::NoParity).toInt());
+	m_serialStopBits = QSerialPort::StopBits(settings.value("/baudStopBits", QSerialPort::OneStop).toInt());
+	m_serialFlowControl = QSerialPort::FlowControl(settings.value("/baudFlowControl", QSerialPort::NoFlowControl).toInt());
 	m_serialAutoConnect = settings.value("/autoConnect", false).toBool();
 	int portIdx = m_ui->comboSerialPortList->findText(portTmp);
 	if (portIdx >= 0) {

@@ -22,7 +22,9 @@ SOURCES += \
     kmComTester.cpp
 
 HEADERS += \
-    kmComTester.h
+    kmComTester.h \
+    kmCommon.h \
+    kmVersion.h
 
 FORMS += \
     kmComTester.ui
