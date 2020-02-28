@@ -17,7 +17,7 @@ For Windows operating system and default qt installation place - set following e
 ```
 SET QTDIR=C:\Qt\Qt5.13.2\5.13.2\mingw73_32
 SET MINGW_DIR=C:\Qt\Qt5.13.2\Tools\mingw730_32
-SET PATH=%PATH%;%QTDIR%\bin;%MINGWDIR%\bin
+SET PATH=%PATH%;%QTDIR%\bin;%MINGW_DIR%\bin
 ```
 
 Go to the *src* directory of the kmComTester application and issue *qmake*, than *make clean release commands*
