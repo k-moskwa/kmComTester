@@ -1,0 +1,19 @@
+<RCC>
+  <qresource prefix="kmComTester">
+    <file>rsc/Go In.png</file>
+    <file>rsc/1.png</file>
+    <file>rsc/2.png</file>
+    <file>rsc/3.png</file>
+    <file>rsc/4.png</file>
+    <file>rsc/Arrow2 Left.png</file>
+    <file>rsc/Arrow2 Right.png</file>
+    <file>rsc/Arrow2 Up.png</file>
+    <file>rsc/Back.png</file>
+    <file>rsc/Arrow2 Down.png</file>
+    <file>rsc/Burn.png</file>
+    <file>rsc/Cancel.png</file>
+    <file>rsc/Dots Down.png</file>
+    <file>rsc/Go Out.png</file>
+    <file>rsc/Info2.png</file>
+  </qresource>
+</RCC>
