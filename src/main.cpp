@@ -23,7 +23,7 @@
 *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "KMComTester.h"
+#include "kmComTester.h"
 
 #include <QApplication>
 
